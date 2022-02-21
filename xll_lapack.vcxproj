@@ -95,10 +95,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="xll_template.cpp" />
+    <ClCompile Include="xll_lapack.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="xll_template.h" />
+    <ClInclude Include="xll_lapack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
