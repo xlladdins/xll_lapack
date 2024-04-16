@@ -6,13 +6,13 @@ using namespace xll;
 AddIn xai_blas_vector_(
 	Function(XLL_HANDLEX, "xll_blas_vector_", "\\BLAS.VECTOR")
 	.Arguments({
-		Arg(XLL_FPX, "v", "is an array of vector elments."),
+		Arg(XLL_FP, "v", "is an array of vector elments."),
 		})
 		.Uncalced()
 	.Category("BLAS")
 	.FunctionHelp("Return a handle to a BLAS vector.")
 );
-HANDLEX WINAPI xll_blas_vector_(_FPX* pv)
+HANDLEX WINAPI xll_blas_vector_(_FP12* pv)
 {
 #pragma XLLEXPORT
 	HANDLEX result = INVALID_HANDLEX;
@@ -35,14 +35,14 @@ HANDLEX WINAPI xll_blas_vector_(_FPX* pv)
 AddIn xai_blas_matrix_(
 	Function(XLL_HANDLEX, "xll_blas_matrix_", "\\BLAS.MATRIX")
 	.Arguments({
-		Arg(XLL_FPX, "v", "is an array of matrix elments."),
+		Arg(XLL_FP, "v", "is an array of matrix elments."),
 		Arg(XLL_BOOL, "_trans", "is an optional boolean indicating the matrix is transposed. Default is false.")
 		})
 	.Uncalced()
 	.Category("BLAS")
 	.FunctionHelp("Return a handle to a BLAS matrix.")
 );
-HANDLEX WINAPI xll_blas_matrix_(_FPX* pv, BOOL t)
+HANDLEX WINAPI xll_blas_matrix_(_FP12* pv, BOOL t)
 {
 #pragma XLLEXPORT
 	HANDLEX result = INVALID_HANDLEX;
@@ -65,13 +65,13 @@ HANDLEX WINAPI xll_blas_matrix_(_FPX* pv, BOOL t)
 AddIn xai_blas_trans(
 	Function(XLL_HANDLEX, "xll_blas_trans", "BLAS.TRANS")
 	.Arguments({
-		Arg(XLL_FPX, "m", "is a matrix."),
+		Arg(XLL_FP, "m", "is a matrix."),
 		})
 		.Uncalced()
 	.Category("BLAS")
 	.FunctionHelp("Return a temporary handle to the transpose of a BLAS matrix.")
 );
-HANDLEX WINAPI xll_blas_trans(_FPX* pa)
+HANDLEX WINAPI xll_blas_trans(_FP12* pa)
 {
 #pragma XLLEXPORT
 	HANDLEX result = INVALID_HANDLEX;
@@ -92,21 +92,21 @@ HANDLEX WINAPI xll_blas_trans(_FPX* pa)
 }
 
 AddIn xai_blas_gemm(
-	Function(XLL_FPX, "xll_blas_gemm", "BLAS.GEMM")
+	Function(XLL_FP, "xll_blas_gemm", "BLAS.GEMM")
 	.Arguments({
-		Arg(XLL_FPX, "a", "is a matrix."),
-		Arg(XLL_FPX, "b", "is a matrix."),
-		Arg(XLL_FPX, "c", "is an optional matrix."),
+		Arg(XLL_FP, "a", "is a matrix."),
+		Arg(XLL_FP, "b", "is a matrix."),
+		Arg(XLL_FP, "c", "is an optional matrix."),
 		Arg(XLL_DOUBLE, "_alpha", "is an optional scaling factor. Default is 1."),
 		Arg(XLL_DOUBLE, "_beta", "is an optional factor. Default is 0.")
 		})
 	.Category("BLAS")
 	.FunctionHelp("Return the matrix product alpha a b + beta c.")
-	.Documentation(R"(
-Compute the matrix product \(c_{i,j} = \sum_k a_{i,k} b_{k,j}\).
-)")
+//	.Documentation(R"(
+//Compute the matrix product \(c_{i,j} = \sum_k a_{i,k} b_{k,j}\).
+//)")
 );
-_FPX* WINAPI xll_blas_gemm(_FPX* pa, _FPX* pb, _FPX* pc, double alpha, double beta)
+_FP12* WINAPI xll_blas_gemm(_FP12* pa, _FP12* pb, _FP12* pc, double alpha, double beta)
 {
 #pragma XLLEXPORT
 	static FPX c;
@@ -136,22 +136,22 @@ _FPX* WINAPI xll_blas_gemm(_FPX* pa, _FPX* pb, _FPX* pc, double alpha, double be
 }
 
 AddIn xai_blas_tpmv(
-	Function(XLL_FPX, "xll_blas_tpmv", "BLAS.TPMV")
+	Function(XLL_FP, "xll_blas_tpmv", "BLAS.TPMV")
 	.Arguments({
-		Arg(XLL_FPX, "a", "is a packed triangular matrix."),
-		Arg(XLL_FPX, "x", "is a vector."),
+		Arg(XLL_FP, "a", "is a packed triangular matrix."),
+		Arg(XLL_FP, "x", "is a vector."),
 		Arg(XLL_BOOL, "_upper", "indicates a is upper. Default is false"),
 		Arg(XLL_BOOL, "_trans", "indicates a is transposed. Default is false"),
 		})
 		.Category("BLAS")
 	.FunctionHelp("Return the product of packed triangular matrix a and vector x.")
-	.Documentation(R"(
-A triangular matrix is a square matrix that is either lower, with entries above the diagonal equal to 0, or
-upper, with entries below the main diagonal equal to 0. 
-)")
-.SeeAlso({ "PACK", "UNPACK" })
+//	.Documentation(R"(
+//A triangular matrix is a square matrix that is either lower, with entries above the diagonal equal to 0, or
+//upper, with entries below the main diagonal equal to 0. 
+//)")
+//.SeeAlso({ "PACK", "UNPACK" })
 );
-_FPX* WINAPI xll_blas_tpmv(_FPX* pa, _FPX* px, BOOL upper, BOOL trans)
+_FP12* WINAPI xll_blas_tpmv(_FP12* pa, _FP12* px, BOOL upper, BOOL trans)
 {
 #pragma XLLEXPORT
 	static FPX c;
@@ -179,20 +179,20 @@ _FPX* WINAPI xll_blas_tpmv(_FPX* pa, _FPX* px, BOOL upper, BOOL trans)
 }
 
 AddIn xai_pack(
-	Function(XLL_FPX, "xll_pack", "PACK")
+	Function(XLL_FP, "xll_pack", "PACK")
 	.Arguments({
-		Arg(XLL_FPX, "A", "is a square matrix."),
+		Arg(XLL_FP, "A", "is a square matrix."),
 		Arg(XLL_BOOL, "_upper", "is an optional argument indicating upper trangle of A is used. Default is lower.")
 		})
 	.FunctionHelp("Pack lower or upper triangle of A.")
 	.Category("BLAS")
-	.Documentation(R"(
-Pack lower \([a_{ij}\) as \([a_{00}, a_{10}, a_{11}, a_{20}, a_{21}, a_{22},\ldots]\)
-and upper as \([a_{00}, a_{01}, a_{11}, a_{02}, a_{12}, a_{22},\ldots]\).
-)")
-.SeeAlso({ "UNPACK" })
+//	.Documentation(R"(
+//Pack lower \([a_{ij}\) as \([a_{00}, a_{10}, a_{11}, a_{20}, a_{21}, a_{22},\ldots]\)
+//and upper as \([a_{00}, a_{01}, a_{11}, a_{02}, a_{12}, a_{22},\ldots]\).
+//)")
+//.SeeAlso({ "UNPACK" })
 );
-_FPX* WINAPI xll_pack(_FPX* pa, BOOL upper)
+_FP12* WINAPI xll_pack(_FP12* pa, BOOL upper)
 {
 #pragma XLLEXPORT
 	static FPX l;
@@ -217,19 +217,19 @@ _FPX* WINAPI xll_pack(_FPX* pa, BOOL upper)
 }
 
 AddIn xai_unpack(
-	Function(XLL_FPX, "xll_unpack", "UNPACK")
+	Function(XLL_FP, "xll_unpack", "UNPACK")
 	.Arguments({
-		Arg(XLL_FPX, "L", "is a packed matrix."),
+		Arg(XLL_FP, "L", "is a packed matrix."),
 		Arg(XLL_LONG, "_ul", "is an optional upper (>0) or lower (<0) flag. Default is 0.")
 		})
 	.FunctionHelp("Unpack L into symmetric (ul = 0), upper triangular (ul > 0), or lower triangular (ul < 0) A.")
 	.Category("BLAS")
-	.Documentation(R"(
-Restore a packed matrix to its full form.
-)")
-.SeeAlso({ "PACK" })
+//	.Documentation(R"(
+//Restore a packed matrix to its full form.
+//)")
+//.SeeAlso({ "PACK" })
 );
-_FPX* WINAPI xll_unpack(_FPX* pl, long ul)
+_FP12* WINAPI xll_unpack(_FP12* pl, long ul)
 {
 #pragma XLLEXPORT
 	static FPX a;

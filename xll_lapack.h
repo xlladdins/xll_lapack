@@ -2,20 +2,20 @@
 #pragma once
 #include "fms_blas/fms_blas.h"
 #include "fms_blas/fms_lapack.h"
-#include "xll/xll/xll.h"
+#include "xll24/xll.h"
 
 namespace xll {
 
-	inline const std::type_info& fp_array = typeid(_FPX);
+	inline const std::type_info& fp_array = typeid(_FP12);
 	inline const std::type_info& fpx_array = typeid(FPX);
 	inline const std::type_info& blas_vector = typeid(blas::vector<double>);
 	inline const std::type_info& blas_matrix = typeid(blas::matrix<double>);
 
 	// non-owning vector
-	inline blas::vector<double> fpvector(_FPX* pa)
+	inline blas::vector<double> fpvector(_FP12* pa)
 	{
 		if (size(*pa) == 1 and pa->array[0] != 0) {
-			if (const auto p = to_pointer<_FPX>(pa->array[0]); typeid(*p) == fp_array) {
+			if (const auto p = to_pointer<_FP12>(pa->array[0]); typeid(*p) == fp_array) {
 				return blas::vector<double>(size(*p), p->array);
 			}
 			if (const auto p = to_pointer<FPX>(pa->array[0]); typeid(*p) == fpx_array) {
@@ -30,10 +30,10 @@ namespace xll {
 	}
 
 	// non-owning matrix
-	inline blas::matrix<double> fpmatrix(_FPX* pa)
+	inline blas::matrix<double> fpmatrix(_FP12* pa)
 	{
 		if (size(*pa) == 1 and pa->array[0] != 0) {
-			if (const auto p = to_pointer<_FPX>(pa->array[0]); typeid(*p) == fp_array) {
+			if (const auto p = to_pointer<_FP12>(pa->array[0]); typeid(*p) == fp_array) {
 				return blas::matrix<double>(p->rows, p->columns, p->array);
 			}
 			if (const auto p = to_pointer<FPX>(pa->array[0]); typeid(*p) == fpx_array) {
